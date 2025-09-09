@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS & JavaScript Interactive Experience</title>
+    <style>
+        :root {
+            --primary: #4e54c8;
+            --secondary: #8f94fb;
+            --accent: #ff6b6b;
+            --dark: #333;
+            --light: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .animated-box {
+            width: 100px;
+            height: 100px;
+            background: var(--accent);
+            border-radius: 10px;
+            margin: 20px auto;
+            transition: all 0.5s ease;
+        }
+        
+        .animated-circle {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin: 20px auto;
+            transition: all 0.5s ease;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .flip-card {
+            width: 200px;
+            height: 200px;
+            perspective: 1000px;
+            margin: 20px auto;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .flip-card-front {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .flip-card-back {
+            background: var(--accent);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        /* Keyframe Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Interactive Web Experience</h1>
+            <p>Combining CSS3 Animations with JavaScript Functions</p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h2>CSS Transitions</h2>
+                <p>Hover over the box to see transitions in action:</p>
+                <div class="animated-box" id="transitionBox"></div>
+                <div class="button-group">
+                    <button onclick="changeColor('transitionBox')">Change Color</button>
+                    <button onclick="changeSize('transitionBox')">Change Size</button>
+                    <button onclick="resetElement('transitionBox')">Reset</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Keyframe Animations</h2>
+                <p>Apply different animations to the circle:</p>
+                <div class="animated-circle" id="animationCircle"></div>
+                <div class="button-group">
+                    <button onclick="applyAnimation('animationCircle', 'pulse')">Pulse</button>
+                    <button onclick="applyAnimation('animationCircle', 'spin')">Spin</button>
+                    <button onclick="applyAnimation('animationCircle', 'bounce')">Bounce</button>
+                    <button onclick="stopAnimation('animationCircle')">Stop</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Progress Animation</h2>
+                <p>Control the progress bar with JavaScript:</p>
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <div class="button-group">
+                    <button onclick="updateProgress(25)">25%</button>
+                    <button onclick="updateProgress(50)">50%</button>
+                    <button onclick="updateProgress(75)">75%</button>
+                    <button onclick="updateProgress(100)">100%</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Card Flip Animation</h2>
+                <p>Hover over the card to flip it:</p>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            Front
+                        </div>
+                        <div class="flip-card-back">
+                            Back
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>JavaScript Functions</h2>
+                <p>Calculate values with reusable functions:</p>
+                <div class="button-group">
+                    <button onclick="calculateArea()">Calculate Area</button>
+                    <button onclick="showNotification()">Show Notification</button>
+                </div>
+                <div id="calculationResult"></div>
+            </div>
+            
+            <div class="card">
+                <h2>Animation Controls</h2>
+                <p>Control animations with JavaScript triggers:</p>
+                <div class="button-group">
+                    <button onclick="startAnimations()">Start All Animations</button>
+                    <button onclick="stopAllAnimations()">Stop All Animations</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="notification" id="notification">
+            This is a notification message!
+        </div>
+    </div>
+    
+    <footer>
+        <p>Interactive Web Experience | CSS3 Animations & JavaScript Functions by Edris Abdella, PLP ACADAMY STUDENT</p>
+    </footer>
+
+    <script>
+        // Global variables
+        const animationElements = ['transitionBox', 'animationCircle'];
+        let progressValue = 0;
+        
+        // Function to change color of an element
+        function changeColor(elementId) {
+            const element = document.getElementById(elementId);
+            const colors = ['#ff6b6b', '#4e54c8', '#8f94fb', '#38d39f', '#ffc107'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            element.style.backgroundColor = randomColor;
+        }
+        
+        // Function to change size of an element
+        function changeSize(elementId) {
+            const element = document.getElementById(elementId);
+            const sizes = ['100px', '120px', '80px', '150px', '90px'];
+            const randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+            element.style.width = randomSize;
+            element.style.height = randomSize;
+        }
+        
+        // Function to reset an element to its original state
+        function resetElement(elementId) {
+            const element = document.getElementById(elementId);
+            element.style = ''; // Reset all inline styles
+        }
+        
+        // Function to apply animation to an element
+        function applyAnimation(elementId, animationName) {
+            const element = document.getElementById(elementId);
+            element.classList.add(animationName);
+        }
+        
+        // Function to stop animation on an element
+        function stopAnimation(elementId) {
+            const element = document.getElementById(elementId);
+            element.classList.remove('pulse', 'spin', 'bounce');
+        }
+        
+        // Function to update progress bar
+        function updateProgress(value) {
+            const progressBar = document.getElementById('progressBar');
+            progressValue = value;
+            progressBar.style.width = `${value}%`;
+        }
+        
+        // Function to show notification
+        function showNotification(message = "Action completed successfully!") {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Function to calculate area (demonstrating parameters and return values)
+        function calculateArea() {
+            const length = parseFloat(prompt("Enter the length:"));
+            const width = parseFloat(prompt("Enter the width:"));
+            
+            if (isNaN(length) || isNaN(width)) {
+                showNotification("Please enter valid numbers!");
+                return;
+            }
+            
+            const area = calculateRectangleArea(length, width);
+            document.getElementById('calculationResult').innerHTML = `
+                <p>Length: ${length}, Width: ${width}</p>
+                <p>Area: ${area}</p>
+            `;
+            showNotification(`Area calculated: ${area}`);
+        }
+        
+        // Helper function to calculate area (demonstrating return values)
+        function calculateRectangleArea(length, width) {
+            return length * width;
+        }
+        
+        // Function to start all animations
+        function startAnimations() {
+            applyAnimation('transitionBox', 'pulse');
+            applyAnimation('animationCircle', 'spin');
+            updateProgress(100);
+            showNotification("All animations started!");
+        }
+        
+        // Function to stop all animations
+        function stopAllAnimations() {
+            animationElements.forEach(id => {
+                stopAnimation(id);
+            });
+            updateProgress(0);
+            showNotification("All animations stopped!");
+        }
+        
+        // Initialize the page with some animations
+        window.onload = function() {
+            applyAnimation('transitionBox', 'pulse');
+            updateProgress(50);
+        };
+    </script>
+</body>
+</html>
